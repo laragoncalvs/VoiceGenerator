@@ -1,4 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![image](https://github.com/user-attachments/assets/768f1c3d-916d-48e0-ab0f-80cff8494307)
+https://voice-generator-jet.vercel.app/
+
 
 ## Getting Started
 
