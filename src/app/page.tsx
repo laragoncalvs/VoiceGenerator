@@ -1,5 +1,5 @@
 "use client";
-
+import { List } from "antd";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -73,30 +73,25 @@ export default function Home() {
   }
 
   return (
+
     <main className="flex min-h-screen flex-col items-center p-24 gap-14">
       <div>
-        <h1 className= "scroll-m-20 text-4xl  tracking-tight lg:text-6xl">Transforme <span className="text-[#7e22ce]"> texto</span> em <span className="text-[#4338ca]">voz</span></h1>
+        <h1 className="scroll-m-20 text-4xl  tracking-tight lg:text-6xl">Transforme <span className="text-[#7e22ce]"> texto</span> em <span className="text-[#4338ca]">voz</span></h1>
       </div>
-      <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Digite seu texto aqui..."/>
-        <h2 className= "mt-8 scroll-m-20 text-2xl border-b pb-2  tracking-tight"><span className="text-[#7e22ce]">+15 </span>vozes para você escolher</h2>
-      <Carousel
-        className="w-full"
-        opts={{
-          align: "start",
-        }}
-      >
-        <CarouselContent>
-          {voices.map((voice: any) => (
-            <CarouselItem key={voice.voice_id} className="lg:basis-1/6">
-              <div className="p-1">
-                <VoiceCard voice={voice} text={text} />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Digite seu texto aqui..." />
+      <h2 className="mt-8 scroll-m-20 text-2xl border-b pb-2  tracking-tight"><span className="text-[#7e22ce]">+15 </span>vozes para você escolher</h2>
+      <div className="">
+
+        <List
+          size="large"
+          bordered
+          dataSource={voices}
+          renderItem={(voice) => <List.Item> <VoiceCard voice={voice} text={text} /></List.Item>}
+        />
+
+      </div>
+
+
     </main>
   );
 }

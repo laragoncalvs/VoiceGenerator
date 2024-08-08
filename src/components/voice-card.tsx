@@ -45,55 +45,59 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
   }
 
   return (
-    <Card
-      className={cn("transition-transform duration-300" , {
-        // "transform translate-y-[-10px] shadow-md":
-        //   voiceId === voice.voice_id,
-        // "cursor-pointer": voiceId !== voice.voice_id,
-      })}
-      // onClick={() => setVoiceId(voice.voice_id)}
-    >
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          {voice.name}
-          <Button
-            type="button"
-            size="icon"
-            variant="secondary"
-            className="rounded-full"
-            onClick={() => play(voice.preview_url!)}
-          >
-            {<PlayIcon />}
-            {/* {playingAudio ? <PauseIcon /> : <PlayIcon />} */}
-          </Button>
-        </CardTitle>
-        <CardDescription>{voice.category}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <h3 className="font-bold text-lg">Labels</h3>
+    <div className="flex flex-row items-center gap-14 " >
+      <div>
 
-        {voice.labels &&
-          Object.keys(voice.labels).map((key) => (
-            <div key={key}>{voice.labels![key]}</div>
-          ))}
-      </CardContent>
-      <CardFooter className="justify-end">
-        {text && (
-          <Button
-            size="icon"
-            className="rounded-full  bg-violet-300"
-            type="button"
-            onClick={onGenerate}
-            disabled={generating}
-          >
-            {generating ? (
-              <LoaderCircleIcon className="animate-spin" />
-            ) : (
-              <PlayIcon />
+        <Button
+          type="button"
+          size="icon"
+          variant="secondary"
+          className="rounded-full"
+          onClick={() => play(voice.preview_url!)}
+        >
+          {<PlayIcon />}
+        </Button>
+      </div>
+      <div >
+        <div className="flex flex-row items-center gap-5">
+
+          <h2 className="font-bold text-lg">
+            {voice.name}
+          </h2>
+          | {voice.category}
+        </div>
+        <div>
+          <div className="flex flex-row items-center gap-3">
+            <h3 >Labels:</h3>
+
+
+            {voice.labels &&
+              Object.keys(voice.labels).map((key) => (
+                <div key={key}>{voice.labels![key]}</div>
+              ))}
+
+         
+            </div>
+
+      </div>
+    </div>
+    <div className="ml-80 ">
+
+    {text && (
+      <Button
+                className="  bg-violet-400"
+                type="button"
+                onClick={onGenerate}
+                disabled={generating}
+                >
+                {generating ? (
+                  <LoaderCircleIcon className="animate-spin" />
+                ) : (
+                  <PlayIcon />
+                )} Gerar texto com essa voz
+              </Button>
             )}
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+            </div>
+            </div>
   );
 }
