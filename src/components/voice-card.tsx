@@ -1,18 +1,19 @@
 "use client";
 
 import { Voice } from "elevenlabs/api";
-import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { LoaderCircleIcon, PauseIcon, PlayIcon } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
+import { LoaderCircleIcon, PlayIcon } from "lucide-react";
+import { useTransition } from "react";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 
 interface VoiceCardProps {
   text: string;
@@ -21,9 +22,8 @@ interface VoiceCardProps {
 
 export function VoiceCard({ voice, text }: VoiceCardProps) {
   const [generating, generate] = useTransition();
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState<HTMLAudioElement>();
+
+  const filter = useSelector((state: RootState) => state.voice.filterOptions);
 
   function onGenerate() {
     generate(async () => {
@@ -45,59 +45,55 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
   }
 
   return (
-    <div className="flex flex-row items-center gap-14 " >
-      <div>
+    <Card
+      className="flex align-row items-center justify-between overflow-hidden"
 
-        <Button
-          type="button"
-          size="icon"
-          variant="secondary"
-          className="rounded-full"
-          onClick={() => play(voice.preview_url!)}
-        >
-          {<PlayIcon />}
-        </Button>
-      </div>
-      <div >
-        <div className="flex flex-row items-center gap-5">
+    >
+      <CardHeader>
+        <CardTitle className="flex items-center ">
+          <Button
+            type="button"
+            size="icon"
+            variant="secondary"
+            className="rounded-full mr-5"
+            onClick={() => play(voice.preview_url!)}
+          >
+            {<PlayIcon />}
+            {/* {playingAudio ? <PauseIcon /> : <PlayIcon />} */}
+          </Button>
+          <div className="flex align-row">
 
-          <h2 className="font-bold text-lg">
             {voice.name}
-          </h2>
-          | {voice.category}
-        </div>
-        <div>
-          <div className="flex flex-row items-center gap-3">
-            <h3 >Labels:</h3>
-
-
-            {voice.labels &&
-              Object.keys(voice.labels).map((key) => (
-                <div key={key}>{voice.labels![key]}</div>
-              ))}
-
-         
-            </div>
-
-      </div>
-    </div>
-    <div className="ml-80 ">
-
-    {text && (
-      <Button
-                className="  bg-violet-400"
-                type="button"
-                onClick={onGenerate}
-                disabled={generating}
-                >
-                {generating ? (
-                  <LoaderCircleIcon className="animate-spin" />
-                ) : (
-                  <PlayIcon />
-                )} Gerar texto com essa voz
-              </Button>
+            {/* <CardDescription>{voice.category}</CardDescription> */}
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-0">
+        {/* <h3 className="font-bold text-lg">Labels</h3> */}
+   
+        {voice.labels && 
+          Object.keys(voice.labels).map((key) => (
+            <Badge variant="secondary" className="m-2" key={key}>{voice.labels![key]}</Badge>
+          ))}
+        
+      </CardContent>
+      <CardFooter className="p-0 pr-5">
+        {text && (
+          <Button
+            className=" bg-violet-300"
+            type="button"
+            onClick={onGenerate}
+            disabled={generating}
+          >
+            {generating ? (
+              <LoaderCircleIcon className="animate-spin mr-2" />
+            ) : (
+              <PlayIcon className=" mr-2" />
             )}
-            </div>
-            </div>
+            Gerar áudio com essa voz
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
   );
 }
