@@ -12,7 +12,11 @@ import { useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "@/app/store"
 export type FilterCategory = keyof FilterOptions;
 
-export function Filter({ voiceOptions }: any) {
+type VoiceOptions = {
+  [key: string]: string[];
+};
+
+export function Filter({ voiceOptions }: { voiceOptions: VoiceOptions }) {
 
   const dispatch = useDispatch<AppDispatch>();
 

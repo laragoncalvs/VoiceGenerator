@@ -2,6 +2,7 @@ import { createSlice} from '@reduxjs/toolkit';
 
 interface VoiceState {
     filterOptions: FilterOptions;
+    filtered: boolean;
 }
 
 export interface FilterOptions {
@@ -9,7 +10,7 @@ export interface FilterOptions {
     gender: string[],
     accent: string[],
     age: string[],
-    useCase: string[]
+    use_case: string[]
 }
 
 
@@ -19,8 +20,9 @@ const initialState: VoiceState = {
         gender: [],
         accent: [],
         age: [],
-        useCase: []
-    }
+        use_case: []
+    },
+    filtered: false
 };
 
 
@@ -29,10 +31,14 @@ const voiceSlice = createSlice({
     initialState,
     reducers: {
         setFilterOptions: (state, action) => {
-            state.filterOptions = action.payload
+            state.filterOptions = action.payload;
+            state.filtered = true
+        },
+        setFiltered: (state, action) => {
+            state.filtered = action.payload
         }
     }
 });
 
-export const { setFilterOptions } = voiceSlice.actions;
+export const { setFilterOptions, setFiltered } = voiceSlice.actions;
 export default voiceSlice.reducer;

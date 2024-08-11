@@ -8,6 +8,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import { Provider } from "react-redux";
 import { RootState, store } from "./store";
 import { useSelector } from "react-redux";
+import { setFiltered } from "@/components/voices.slice";
 
 
 type FilterOptions = {
@@ -15,7 +16,7 @@ type FilterOptions = {
     gender: string[];
     accent: string[];
     age: string[];
-    useCase: string[];
+    use_case: string[];
 };
 
 export default function VoiceList() {
@@ -31,13 +32,14 @@ export default function VoiceList() {
         gender: [],
         accent: [],
         age: [],
-        useCase: []
+        use_case: []
     });
     async function load() {
         const res = await fetch("https://api.elevenlabs.io/v1/voices");
         const data = await res.json();
         setVoices(data.voices);
         setVoiceId(data.voices[0].voice_id);
+        setFiltered(false);
     }
 
     const filter = useSelector((state: RootState) => state.voice.filterOptions);
@@ -77,7 +79,7 @@ export default function VoiceList() {
                 acc.gender = Array.from(new Set([...acc.gender, voice.labels.gender]));
                 acc.accent = Array.from(new Set([...acc.accent, voice.labels.accent]));
                 acc.age = Array.from(new Set([...acc.age, voice.labels.age]));
-                acc.useCase = Array.from(new Set([...acc.useCase, voice.labels.use_case]));
+                acc.use_case = Array.from(new Set([...acc.use_case, voice.labels.use_case]));
                 return acc;
             },
             {
@@ -85,7 +87,7 @@ export default function VoiceList() {
                 gender: [],
                 accent: [],
                 age: [],
-                useCase: []
+                use_case: []
             }
         );
         setFilterOptions(options);
@@ -102,14 +104,11 @@ export default function VoiceList() {
             (filter.gender.length === 0 || filter.gender.includes(voice.labels.gender)) &&
             (filter.accent.length === 0 || filter.accent.includes(voice.labels.accent)) &&
             (filter.age.length === 0 || filter.age.includes(voice.labels.age)) &&
-            (filter.useCase.length === 0 || filter.useCase.includes(voice.labels.use_case))
+            (filter.use_case.length === 0 || filter.use_case.includes(voice.labels.use_case))
         );
     };
 
     const filteredVoices = filterVoices(voices, filter);
-
-    console.log(filteredVoices);
-
 
     return (
         <Provider store={store}>
@@ -120,7 +119,7 @@ export default function VoiceList() {
                 <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Digite seu texto aqui..." />
                 <h2 className="mt-8 scroll-m-20 text-2xl border-b pb-2  tracking-tight"><span className="text-[#7e22ce]">+15 </span>vozes para você escolher</h2>
 
-                <Filter voiceOptions={filterOptions} />
+                <Filter voiceOptions={filterOptions}/>
                 <div className="flex flex-col items-center gap-3 ">
 
                     {filteredVoices.map((voice: any) => (

@@ -11,9 +11,10 @@ import {
   CardTitle,
 } from "./ui/card";
 import { LoaderCircleIcon, PlayIcon } from "lucide-react";
-import { useTransition } from "react";
+import React, { useTransition } from "react";
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
+import { FilterOptions } from "./voices.slice";
 
 interface VoiceCardProps {
   text: string;
@@ -70,12 +71,26 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
       </CardHeader>
       <CardContent className="p-0">
         {/* <h3 className="font-bold text-lg">Labels</h3> */}
-   
-        {voice.labels && 
+        {/* {voice.labels &&
           Object.keys(voice.labels).map((key) => (
             <Badge variant="secondary" className="m-2" key={key}>{voice.labels![key]}</Badge>
-          ))}
-        
+          ))} */}
+        {voice.labels &&
+          Object.keys(voice.labels).length > 0 &&
+          (Object.keys(voice.labels) as Array<keyof FilterOptions>).map((key) => {
+            const labelValue = voice.labels![key];
+            if (
+              filter[key] &&
+              !filter[key]?.includes(labelValue)
+            ) {
+              return (
+                <Badge variant="secondary" className="m-2" key={key}>
+                  {labelValue}
+                </Badge>
+              );
+            }
+            return null;
+          })}
       </CardContent>
       <CardFooter className="p-0 pr-5">
         {text && (
