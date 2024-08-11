@@ -35,7 +35,7 @@ export default function VoiceList() {
         use_case: []
     });
     async function load() {
-        const res = await fetch("/api/voices");
+        const res = await fetch("https://api.elevenlabs.io/v1/voices");
         const data = await res.json();
         setVoices(data.voices);
         setVoiceId(data.voices[0].voice_id);
