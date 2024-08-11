@@ -25,7 +25,6 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
   const [generating, generate] = useTransition();
 
   const filter = useSelector((state: RootState) => state.voice.filterOptions);
-
   function onGenerate() {
     generate(async () => {
       const res = await fetch("/api/audio", {
@@ -60,21 +59,17 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
             onClick={() => play(voice.preview_url!)}
           >
             {<PlayIcon />}
-            {/* {playingAudio ? <PauseIcon /> : <PlayIcon />} */}
+
           </Button>
           <div className="flex align-row">
 
             {voice.name}
-            {/* <CardDescription>{voice.category}</CardDescription> */}
+
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        {/* <h3 className="font-bold text-lg">Labels</h3> */}
-        {/* {voice.labels &&
-          Object.keys(voice.labels).map((key) => (
-            <Badge variant="secondary" className="m-2" key={key}>{voice.labels![key]}</Badge>
-          ))} */}
+
         {voice.labels &&
           Object.keys(voice.labels).length > 0 &&
           (Object.keys(voice.labels) as Array<keyof FilterOptions>).map((key) => {
@@ -84,7 +79,7 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
               !filter[key]?.includes(labelValue)
             ) {
               return (
-                <Badge variant="secondary" className="m-2" key={key}>
+                <Badge variant="secondary" className="m-2 bg-indigo-200" key={key}>
                   {labelValue}
                 </Badge>
               );
@@ -95,7 +90,7 @@ export function VoiceCard({ voice, text }: VoiceCardProps) {
       <CardFooter className="p-0 pr-5">
         {text && (
           <Button
-            className=" bg-violet-300"
+          variant="secondary"
             type="button"
             onClick={onGenerate}
             disabled={generating}

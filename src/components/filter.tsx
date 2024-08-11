@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select"
 
 import { useSelector } from "react-redux"
-import {FilterOptions, setFilterOptions } from "./voices.slice"
+import { FilterOptions, setFilterOptions } from "./voices.slice"
 import { useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "@/app/store"
 export type FilterCategory = keyof FilterOptions;
@@ -40,24 +40,31 @@ export function Filter({ voiceOptions }: { voiceOptions: VoiceOptions }) {
       {voiceOptions &&
         Object.entries(voiceOptions).map(([key, value]) => (
           value && (
-            <Select key={key}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={key} />
-              </SelectTrigger>
-              <SelectContent>
-                {value.map((item: any, index: any) => (
-                  <label className="flex align-col" key={item}>
-                    <input
-                      type="checkbox"
-                      value={item}
-                      checked={filter[key as FilterCategory]?.includes(item) || false}
-                      onChange={(e) => handleCheckboxChange(e, key as keyof FilterOptions)}
-                    />
-                    {item}
-                  </label>
-                ))}
-              </SelectContent>
-            </Select >
+            <div className="p-1">
+
+              <Select key={key} >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={key} />
+                </SelectTrigger>
+                <SelectContent>
+                  {value.map((item: any, index: any) => (
+                    <label className="relative flex items-center p-1 rounded-full cursor-pointer"  key={item}>
+                      <input
+                        className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-indigo-500 checked:bg-indigo-500 checked:before:bg-indigo-500 hover:before:opacity-10" type="checkbox"
+                        id="indigo"
+                        value={item}
+                        checked={filter[key as FilterCategory]?.includes(item) || false}
+                        onChange={(e) => handleCheckboxChange(e, key as keyof FilterOptions)}
+                      />
+                      <span className="ml-2">
+
+                      {item}
+                      </span>
+                    </label>
+                  ))}
+                </SelectContent>
+              </Select >
+            </div>
           )
         ))
       }

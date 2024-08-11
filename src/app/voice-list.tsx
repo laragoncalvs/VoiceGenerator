@@ -35,7 +35,7 @@ export default function VoiceList() {
         use_case: []
     });
     async function load() {
-        const res = await fetch("https://api.elevenlabs.io/v1/voices");
+        const res = await fetch("/api/voices");
         const data = await res.json();
         setVoices(data.voices);
         setVoiceId(data.voices[0].voice_id);
@@ -93,6 +93,8 @@ export default function VoiceList() {
         setFilterOptions(options);
     }, [voices]);
 
+    console.log(filterOptions)
+
     function togglePlay(audioUrl: string): void {
         const audio = new Audio(audioUrl);
         setAudio(audio);
@@ -118,8 +120,11 @@ export default function VoiceList() {
                 </div>
                 <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Digite seu texto aqui..." />
                 <h2 className="mt-8 scroll-m-20 text-2xl border-b pb-2  tracking-tight"><span className="text-[#7e22ce]">+15 </span>vozes para você escolher</h2>
+                <div className="flex align-row items-center">
 
+                <span className="mr-5 font-bold">Filtros:</span>
                 <Filter voiceOptions={filterOptions}/>
+                </div>
                 <div className="flex flex-col items-center gap-3 ">
 
                     {filteredVoices.map((voice: any) => (
